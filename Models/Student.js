@@ -1,4 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+
+const Schema = mongoose.Schema
 
 const StudentSchema = new Schema({
     name:{
@@ -16,13 +18,11 @@ const StudentSchema = new Schema({
     },
     enrollment_no:{
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     faculty_no:{
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     room_no:{
         type: Number
@@ -51,7 +51,8 @@ const StudentSchema = new Schema({
 
 });
 
-export default mongoose.model('student', StudentSchema)
+const Student = mongoose.model('student', StudentSchema)
+export default Student
 /*
 name:
 email:
