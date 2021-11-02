@@ -38,10 +38,7 @@ router.post('/signup',[
         enrollment_no: req.body.enrollment_no,
         faculty_no: req.body.faculty_no 
       })
-      // .then(user => res.json(user))
-      // .catch(err=>{console.log(err)
-      // res.json({error:'Please eter a unique email'})}
-      // );
+     
       const data = {
           user:{
             id: user.id
