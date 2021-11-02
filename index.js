@@ -1,26 +1,3 @@
-const connectToMongo = require('./db')
-var cors = require('cors')
-import timeTable from './Routers/TimeTable.js';
-
-const express = require('express')
-const app = express()
-const port = 5000
-
-app.use(cors())
-app.use(express.json())
-
-//Available routes
-app.use("/timetable",timeTable);
-app.use('/api/auth', require('./routes/auth'))
-
-app.listen(port, () => {
-  console.log(`server-myhomepage listening at http://localhost:${port}`)
-})
-
-connectToMongo()
-
-
-/*
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
@@ -40,4 +17,4 @@ mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: tr
 .then(()=> app.listen(PORT,()=>console.log(`Server running on port: ${PORT}`)))
 .catch((error)=> console.log(error.message))
 
-mongoose.set('useFindAndModify',false)*/
+mongoose.set('useFindAndModify',false)
