@@ -25,13 +25,13 @@ const StudentSchema = new Schema({
         required: true
     },
     room_no:{
-        type: Number
+        type: String
     },
     hostel_name:{
         type: String
     },
     phone_no:{
-        type: Number
+        type: String
     },
     payment_history:{
         type: String,
