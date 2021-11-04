@@ -103,7 +103,7 @@ router.post('/loginstudent',[
 })
 
 //ROUTE3 get details of user using: post "/api/auth/getstudent". require auth
-router.post('/getstudent',fetchuser,async (req, res)=>{
+router.get('/getstudent',fetchuser,async (req, res)=>{
 
   try{
   const userId = req.user.id;
@@ -206,7 +206,7 @@ res.json({success, authToken})
 })
 
 //ROUTE6 get details of user using: post "/api/auth/getadmin". require auth
-router.post('/getadmin',fetchuser,async (req, res)=>{
+router.get('/getadmin',fetchuser,async (req, res)=>{
 
 try{
 const userId = req.user.id;

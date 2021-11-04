@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import timeTable from './Routers/TimeTable.js';
 import authentication from './Routers/auth.js';
+import requestclose from './Routers/requestClose.js';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors())
 //Available routes
 app.use('/api/auth', authentication)
 app.use("/timetable",timeTable);
+app.use('/api/req', requestclose)
 
 
 const CONNECTION_URL= 'mongodb+srv://yusufm423:NavedYusuf1@cluster0.zkhhv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
