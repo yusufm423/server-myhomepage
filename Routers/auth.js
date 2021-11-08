@@ -114,6 +114,39 @@ router.get('/getstudent',fetchuser,async (req, res)=>{
       res.status(500).send("Internal Server error occured")
     }
   })
+  //ROUTE3 update student profile: PUT "/api/auth/updateprofile". requires auth
+router.put('/updateprofile/:id',fetchuser,async (req, res)=>{
+  try {
+      const {name, email, room_no, course_year, hostel_name, course_name, faculty_no, enrollment_no, phone_no} = req.body
+  //create new note
+  const newStudent = {}
+  if(name){newStudent.name = name}
+  if(email){newStudent.email = email}
+  if(room_no){newStudent.room_no = room_no}
+  if(course_year){newStudent.course_year = course_year}
+  if(hostel_name){newStudent.hostel_name = hostel_name}
+  if(course_name){newStudent.course_name = course_name}
+  if(faculty_no){newStudent.faculty_no = faculty_no}
+  if(enrollment_no){newStudent.enrollment_no = enrollment_no}
+  if(phone_no){newStudent.phone_no = phone_no}
+    // console.log(newStudent)
+  //find the note to be updated and update it
+  let stu = await Student.findById(req.params.id)
+  if(!stu){return res.status(404).send("Not Found")}
+
+  // console.log(" ")
+  if(stu._id.toString() !== req.user.id){
+      return res.status(401).send("Not Allowed")
+  }
+  stu = await Student.findByIdAndUpdate(req.params.id, {$set: newStudent, new:true})
+  res.json({stu})
+
+  } catch(error){
+      console.error(error.message);
+      res.status(500).send("Internal Server error occured")
+    }
+  
+})
 
   //ROUTE4 create a user using: POST "/api/auth/signupadmin". doesnt require auth
 router.post('/signupadmin',[
