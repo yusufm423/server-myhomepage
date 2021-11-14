@@ -4,9 +4,27 @@ import reqClose from '../Models/RequestClose.js';
 import reqOrder from '../Models/ReqRoomOrder.js';
 import feedback from '../Models/Feedback.js';
 import fetchuser from '../Controllers/fetchuser.js';
+import Delieveries from '../Models/Delieveries.js';
 
 
 const router = express.Router()
+
+router.get('/reqorder/get',async (req,res)=>{
+  try{
+
+    // console.log("reached")
+
+    const requests = await reqOrder.find()
+
+    const delieveries = await Delieveries.find()
+    
+    res.status(200).json({requests,delieveries})
+
+  }
+  catch(error){
+    res.status(404).send('Not available')
+  }
+})
 
 //ROUTE1 create student request to close using: POST "/api/req/reqclose"
 router.post('/reqclose',async (req, res)=>{
@@ -24,7 +42,8 @@ router.post('/reqclose',async (req, res)=>{
         email: req.body.email,
         room_no: req.body.room_no,
         reason: req.body.reason,
-        meal: req.body.meal
+        meal: req.body.meal,
+        date:new Date()
       })
 
       // console.log(jwtData)

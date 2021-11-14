@@ -17,7 +17,10 @@ const reqOrderSchema = new Schema({
     },
     meal:{
         type: String
-    }    
+    }  ,
+    date:{
+        type:String
+    }  
 
 });
 

@@ -47,7 +47,12 @@ const StudentSchema = new Schema({
     },
     profile_pic:{
         type: String
-    }    
+    } ,
+    Notifications:{
+        type:Array,
+        text:String,
+        date:String,
+    }  
 
 });
 

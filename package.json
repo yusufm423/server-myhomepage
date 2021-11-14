@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.12"
+    "mongoose": "^5.13.12",
+    "socket.io": "^4.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"

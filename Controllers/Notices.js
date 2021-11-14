@@ -30,7 +30,7 @@ export const getNotices = async (req, res) => {
     const notices = await Notices.find()
 
 
-    console.log("sending",new Date().getDate)
+    console.log("sending",new Date().getTime())
 
     res.status(200).json(notices)
 }
