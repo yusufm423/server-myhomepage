@@ -5,6 +5,7 @@ import reqOrder from '../Models/ReqRoomOrder.js';
 import feedback from '../Models/Feedback.js';
 import fetchuser from '../Controllers/fetchuser.js';
 import Delieveries from '../Models/Delieveries.js';
+import reqclose from '../Models/RequestClose.js';
 
 
 const router = express.Router()
@@ -17,8 +18,10 @@ router.get('/reqorder/get',async (req,res)=>{
     const requests = await reqOrder.find()
 
     const delieveries = await Delieveries.find()
+
+    const reqClose = await reqclose.find()
     
-    res.status(200).json({requests,delieveries})
+    res.status(200).json({requests,delieveries,reqClose})
 
   }
   catch(error){
