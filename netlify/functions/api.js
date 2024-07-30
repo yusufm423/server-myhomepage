@@ -2,18 +2,20 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
-import timeTable from "./Routers/TimeTable.js";
-import authentication from "./Routers/auth.js";
-import requestclose from "./Routers/requestClose.js";
-import notice from "./Routers/Notices.js";
+import timeTable from "../../Routers/TimeTable.js";
+import authentication from "../../Routers/auth.js";
+import requestclose from "../../Routers/requestClose.js";
+import notice from "../../Routers/Notices.js";
 import { createRequire } from "module";
-import Student from "./Models/Student.js";
-import reqorder from "./Models/ReqRoomOrder.js";
-import Delieveries from "./Models/Delieveries.js";
-import AllData from "./Routers/AllStud.js";
-import student from "./Models/Student.js"
-import images from "./Routers/Images.js";
-import close from "./Routers/close.js";
+import Student from "../../Models/Student.js";
+import reqorder from "../../Models/ReqRoomOrder.js";
+import Delieveries from "../../Models/Delieveries.js";
+import AllData from "../../Routers/AllStud.js";
+import student from "../../Models/Student.js"
+import images from "../../Routers/Images.js";
+import close from "../../Routers/close.js";
+import serverless from "serverless-http";
+import { MONGODB_URL, SERVER_ENDPOINT } from "../../environment.js";
 
 const app = express();
 const require = createRequire(import.meta.url);
@@ -27,14 +29,14 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 //Available routes
-app.use("/api/auth", authentication);
-app.use("/timetable", timeTable);
-app.use("/api/req", requestclose);
-app.use("/notices", notice);
-app.use("/AllStud", AllData);
-app.use("/images",images)
-app.use("/close",close)
-app.post("/checkout", async (req, res) => {
+app.use(`${SERVER_ENDPOINT}/api/auth`, authentication);
+app.use(`${SERVER_ENDPOINT}/timetable`, timeTable);
+app.use(`${SERVER_ENDPOINT}/api/req`, requestclose);
+app.use(`${SERVER_ENDPOINT}/notices`, notice);
+app.use(`${SERVER_ENDPOINT}/AllStud`, AllData);
+app.use(`${SERVER_ENDPOINT}/images`, images)
+app.use(`${SERVER_ENDPOINT}/close`, close);
+app.post(`${SERVER_ENDPOINT}/checkout`, async (req, res) => {
   // console.log("Request:", req.body);
 
   let error;
@@ -46,15 +48,15 @@ app.post("/checkout", async (req, res) => {
       email: token.email,
       source: token.id,
     });
-    const user = await student.findOne({email:token.email})
-    
-    user.Fees.DaysRemain = user.Fees.DaysRemain+30
+    const user = await student.findOne({ email: token.email })
 
-    user.Fees.started = Math.ceil(new Date().getTime()/(1000*60*60*24))
+    user.Fees.DaysRemain = user.Fees.DaysRemain + 30
+
+    user.Fees.started = Math.ceil(new Date().getTime() / (1000 * 60 * 60 * 24))
 
     await user.save()
 
-    console.log("Charge:", { price,user });
+    console.log("Charge:", { price, user });
     status = "success";
   } catch (error) {
     console.error("Error:", error);
@@ -63,8 +65,7 @@ app.post("/checkout", async (req, res) => {
   res.json({ error, status });
 });
 
-const CONNECTION_URL =
-  "mongodb+srv://yusufm423:NavedYusuf1@cluster0.zkhhv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const CONNECTION_URL = MONGODB_URL;
 const PORT = process.env.PORT || 5000;
 try {
   mongoose
@@ -82,6 +83,9 @@ const server = app.listen(PORT, () => {
   console.log(`server is listening on port ${PORT}`);
   console.log(`http://localhost:${PORT}`);
 });
+
+export const handler = serverless(app);
+
 const io = socket(server, {
   cors: {
     origin: "*",
@@ -102,6 +106,7 @@ const getUser = (userId) => users.find((user) => user.userId === userId.user);
 const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
+
 io.on("connection", (socket) => {
   socket.emit("connection", null);
   //console.log('new user connected');
